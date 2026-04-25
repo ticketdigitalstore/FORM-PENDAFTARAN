@@ -3,9 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>International Run Registration</title>
+<title>Run Registration</title>
 
-<!-- FONT -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
 <style>
@@ -16,34 +15,38 @@ body {
   color:#fff;
 }
 
-/* HEADER */
+/* HEADER BANNER */
 .header {
-  background: linear-gradient(90deg, #ff416c, #ff4b2b);
-  padding:30px;
-  text-align:center;
-  font-size:28px;
-  font-weight:700;
-  letter-spacing:1px;
-  box-shadow:0 5px 20px rgba(0,0,0,0.2);
+  position:relative;
+}
+.header img {
+  width:100%;
+  height:200px;
+  object-fit:cover;
+}
+.timer {
+  position:absolute;
+  bottom:10px;
+  right:20px;
+  background:#ff416c;
+  padding:8px 15px;
+  border-radius:20px;
+  font-weight:bold;
 }
 
 /* CONTAINER */
 .container {
   max-width:600px;
-  margin:30px auto;
+  margin:20px auto;
   background:rgba(255,255,255,0.1);
-  padding:25px;
+  padding:20px;
   border-radius:20px;
   backdrop-filter: blur(10px);
 }
 
 /* SECTION */
-.section {
-  display:none;
-}
-.section.active {
-  display:block;
-}
+.section { display:none; }
+.section.active { display:block; }
 
 /* INPUT */
 input, select, textarea {
@@ -57,21 +60,26 @@ input, select, textarea {
 /* BUTTON */
 button {
   padding:12px 20px;
-  margin-top:15px;
+  margin-top:10px;
   border:none;
   border-radius:30px;
   background: linear-gradient(90deg, #ff416c, #ff4b2b);
   color:#fff;
   font-weight:bold;
   cursor:pointer;
-  transition:0.3s;
 }
-button:hover {
-  transform:scale(1.05);
+
+/* QRIS */
+.qris {
+  text-align:center;
+}
+.qris img {
+  width:200px;
+  margin-bottom:10px;
 }
 
 /* LOADING */
-.loading {
+.loading, .thankyou {
   display:none;
   text-align:center;
 }
@@ -84,17 +92,8 @@ button:hover {
   animation:spin 1s linear infinite;
   margin:20px auto;
 }
-
 @keyframes spin {
-  0% { transform:rotate(0deg); }
   100% { transform:rotate(360deg); }
-}
-
-/* THANK YOU */
-.thankyou {
-  display:none;
-  text-align:center;
-  font-size:20px;
 }
 </style>
 </head>
@@ -102,7 +101,8 @@ button:hover {
 <body>
 
 <div class="header">
-🌍 INTERNATIONAL RUN EVENT
+<img src="banner.jpg">
+<div class="timer" id="timer">10:00</div>
 </div>
 
 <div class="container">
@@ -110,11 +110,11 @@ button:hover {
 <!-- SECTION 1 -->
 <div class="section active">
 <h3>Personal Information</h3>
-<input type="text" placeholder="Full Name" id="name">
-<input type="email" placeholder="Email" id="email">
-<input type="text" placeholder="Phone Number">
-<select>
-<option>Gender</option>
+<input type="text" placeholder="Full Name" required>
+<input type="email" placeholder="Email" required>
+<input type="text" placeholder="Phone Number" required>
+<select required>
+<option value="">Gender</option>
 <option>Male</option>
 <option>Female</option>
 </select>
@@ -124,15 +124,15 @@ button:hover {
 <!-- SECTION 2 -->
 <div class="section">
 <h3>Race Category</h3>
-<select>
-<option>Choose Category</option>
+<select required>
+<option value="">Category</option>
 <option>5K</option>
 <option>10K</option>
 <option>Half Marathon</option>
 <option>Full Marathon</option>
 </select>
-<select>
-<option>T-Shirt Size</option>
+<select required>
+<option value="">T-Shirt Size</option>
 <option>S</option>
 <option>M</option>
 <option>L</option>
@@ -144,10 +144,10 @@ button:hover {
 
 <!-- SECTION 3 -->
 <div class="section">
-<h3>Health & Emergency</h3>
-<input type="text" placeholder="Blood Type">
-<textarea placeholder="Medical Condition"></textarea>
-<input type="text" placeholder="Emergency Contact">
+<h3>Health</h3>
+<input type="text" placeholder="Blood Type" required>
+<textarea placeholder="Medical Condition" required></textarea>
+<input type="text" placeholder="Emergency Contact" required>
 <button onclick="prev()">Back</button>
 <button onclick="next()">Next</button>
 </div>
@@ -155,13 +155,21 @@ button:hover {
 <!-- SECTION 4 -->
 <div class="section">
 <h3>Payment</h3>
-<select>
-<option>Payment Method</option>
+
+<div class="qris">
+<p>Scan QRIS:</p>
+<img src="qris.png"> <!-- GANTI QRIS DISINI -->
+</div>
+
+<select required>
+<option value="">Payment Method</option>
+<option>QRIS</option>
 <option>Bank Transfer</option>
 <option>E-Wallet</option>
-<option>Credit Card</option>
 </select>
-<input type="file">
+
+<input type="file" required>
+
 <button onclick="prev()">Back</button>
 <button onclick="submitForm()">Submit</button>
 </div>
@@ -169,30 +177,42 @@ button:hover {
 <!-- LOADING -->
 <div class="loading" id="loading">
 <div class="spinner"></div>
-<p>Processing your registration...</p>
+<p>Processing...</p>
 </div>
 
 <!-- THANK YOU -->
 <div class="thankyou" id="thankyou">
-🎉 Registration Successful! <br><br>
-Kami akan konfirmasi melalui E-mail Anda. <br>
-Check inbox/spam secara berkala. <br><br>
+<h2>🎉 Registration Successful!</h2>
+<p>Kami akan konfirmasi melalui E-mail Anda.</p>
+<p>Silakan cek inbox atau spam secara berkala.</p>
 🔥 See you at the starting line!
 </div>
 
 </div>
 
-<!-- SCRIPT -->
 <script>
 let current = 0;
 let sections = document.querySelectorAll(".section");
 
-function show(index){
-  sections.forEach(s => s.classList.remove("active"));
-  sections[index].classList.add("active");
+/* NAVIGATION */
+function show(i){
+  sections.forEach(s=>s.classList.remove("active"));
+  sections[i].classList.add("active");
+}
+
+function validate(){
+  let inputs = sections[current].querySelectorAll("input, select, textarea");
+  for(let i of inputs){
+    if(!i.value){
+      alert("Harap isi semua data!");
+      return false;
+    }
+  }
+  return true;
 }
 
 function next(){
+  if(!validate()) return;
   current++;
   show(current);
 }
@@ -202,32 +222,37 @@ function prev(){
   show(current);
 }
 
+/* SUBMIT */
 function submitForm(){
+  if(!validate()) return;
+
   document.querySelector(".container").style.display="none";
   document.getElementById("loading").style.display="block";
 
-  setTimeout(() => {
+  setTimeout(()=>{
     document.getElementById("loading").style.display="none";
     document.getElementById("thankyou").style.display="block";
-
-    sendEmail();
-  }, 5000);
+  },5000);
 }
 
-/* EMAILJS (OPTIONAL AKTIFKAN) */
-function sendEmail(){
-  // AKTIFKAN jika sudah daftar di emailjs.com
-  /*
-  emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{
-    name: document.getElementById("name").value,
-    email: document.getElementById("email").value
-  });
-  */
-}
+/* COUNTDOWN 10 MENIT */
+let time = 600;
+let timerEl = document.getElementById("timer");
+
+let countdown = setInterval(()=>{
+  let m = Math.floor(time/60);
+  let s = time%60;
+  timerEl.innerHTML = m+":"+(s<10?"0"+s:s);
+
+  time--;
+  if(time < 0){
+    clearInterval(countdown);
+    current = 1;
+    show(current);
+  }
+},1000);
+
 </script>
-
-<!-- EMAILJS CDN -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
 </body>
 </html>
